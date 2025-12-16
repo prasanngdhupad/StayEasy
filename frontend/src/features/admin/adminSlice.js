@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from "../../config/axios";
 
 // ✅ ALL THUNKS (FIXED)
 export const fetchAdminProducts = createAsyncThunk(
