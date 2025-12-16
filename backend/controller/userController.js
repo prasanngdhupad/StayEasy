@@ -50,10 +50,20 @@ export const loginUser = handleAsyncError(async (req, res, next) => {
 });
 
 /* LOGOUT */
-export const logout = handleAsyncError(async (req, res) => {
-  res.cookie("token", null, { expires: new Date(Date.now()), httpOnly: true });
-  res.json({ success: true, message: "Logged out successfully" });
-});
+export const logout = (req, res) => {
+  res.cookie("token", null, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+    expires: new Date(Date.now()),
+  });
+
+  res.json({
+    success: true,
+    message: "Logged out successfully",
+  });
+};
+
 
 /* PASSWORD RESET REQUEST */
 export const reqPasswordReset = handleAsyncError(async (req, res, next) => {
