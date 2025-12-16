@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://stayeasy-i4zr.onrender.com/api/$1"
+    }
+  ]
+}
