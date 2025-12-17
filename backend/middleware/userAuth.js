@@ -7,6 +7,7 @@ import mongoose from "mongoose";
    AUTHENTICATE USER
 ===================================================== */
 export const verifyUserAuth = handleAsyncError(async (req, res, next) => {
+   console.log("COOKIES RECEIVED:", req.cookies);
   const { token } = req.cookies;
 
   if (!token) {
