@@ -23,6 +23,9 @@ app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
+// Trust proxy for Render deployment
+app.set("trust proxy", 1);
+
 app.use(
   cors({
     origin: "https://stay-easy-puce.vercel.app",
