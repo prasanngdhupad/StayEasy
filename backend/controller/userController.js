@@ -51,11 +51,12 @@ export const loginUser = handleAsyncError(async (req, res, next) => {
 
 /* LOGOUT */
 export const logout = (req, res) => {
-  res.cookie("token", null, {
+  res.cookie("token", "", {
     httpOnly: true,
     secure: true,
-    sameSite: "None",
-    expires: new Date(Date.now()),
+    sameSite: "none", // ✅ lowercase (MUST MATCH sendToken)
+    path: "/",        // ✅ important
+    expires: new Date(0),
   });
 
   res.json({
@@ -63,6 +64,7 @@ export const logout = (req, res) => {
     message: "Logged out successfully",
   });
 };
+;
 
 
 /* PASSWORD RESET REQUEST */
