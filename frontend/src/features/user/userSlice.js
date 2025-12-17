@@ -201,6 +201,9 @@ const userSlice = createSlice({
         state.user = action.payload?.user || null;
         state.isAuthenticated = Boolean(action.payload?.user);
         localStorage.setItem("user", JSON.stringify(state.user));
+        if (action.payload?.token) {
+          localStorage.setItem("token", action.payload.token);
+        }
         localStorage.setItem(
           "isAuthenticated",
           JSON.stringify(state.isAuthenticated)
@@ -225,6 +228,9 @@ const userSlice = createSlice({
         state.user = action.payload?.user || null;
         state.isAuthenticated = Boolean(action.payload?.user);
         localStorage.setItem("user", JSON.stringify(state.user));
+        if (action.payload?.token) {
+          localStorage.setItem("token", action.payload.token);
+        }
         localStorage.setItem(
           "isAuthenticated",
           JSON.stringify(state.isAuthenticated)
@@ -261,7 +267,10 @@ const userSlice = createSlice({
         if (action.payload?.statusCode === 401) {
           state.user = null;
           state.isAuthenticated = false;
+          state.user = null;
+          state.isAuthenticated = false;
           localStorage.removeItem("user");
+          localStorage.removeItem("token");
           localStorage.removeItem("isAuthenticated");
         }
       });
@@ -274,7 +283,10 @@ const userSlice = createSlice({
         (state.loading = false), (state.error = null);
         state.user = null;
         state.isAuthenticated = false;
+        state.user = null;
+        state.isAuthenticated = false;
         localStorage.removeItem("user");
+        localStorage.removeItem("token");
         localStorage.removeItem("isAuthenticated");
       })
       .addCase(logout.rejected, (state, action) => {

@@ -7,43 +7,48 @@ import mongoose from "mongoose";
    AUTHENTICATE USER
 ===================================================== */
 export const verifyUserAuth = handleAsyncError(async (req, res, next) => {
-   console.log("COOKIES RECEIVED:", req.cookies);
-  const { token } = req.cookies;
+  console.log("COOKIES RECEIVED:", req.cookies);
+  let { token } = req.cookies;
 
-  if (!token) {
-    return next(
-      new HandleError(
-        "Authentication required. Please login to continue.",
-        401
-      )
-    );
-  }
+  // ✅ CHECK HEADER IF COOKIE MISSING
+  if (!token && req.headers.authorization) {
+    token = req.headers.authorization.replace("Bearer ", "");
+  }
 
-  const decodedData = jwt.verify(
-    token,
-    process.env.JWT_SECRET_KEY
-  );
+  if (!token) {
+    return next(
+      new HandleError(
+        "Authentication required. Please login to continue.",
+        401
+      )
+    );
+  }
 
-  const userId = decodedData.id;
+  const decodedData = jwt.verify(
+    token,
+    process.env.JWT_SECRET_KEY
+  );
 
-  // 🚨 CRITICAL FIX: Check if the ID is a valid Mongoose ObjectId
-  if (!mongoose.Types.ObjectId.isValid(userId)) {
-    // If the ID is invalid, consider the user not logged in (or token invalid)
-    return next(
-      new HandleError("Invalid user ID in token. Please login again.", 401)
-    );
-  }
+  const userId = decodedData.id;
 
-  req.user = await User.findById(userId);
+  // 🚨 CRITICAL FIX: Check if the ID is a valid Mongoose ObjectId
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    // If the ID is invalid, consider the user not logged in (or token invalid)
+    return next(
+      new HandleError("Invalid user ID in token. Please login again.", 401)
+    );
+  }
 
-  if (!req.user) {
-    // User ID was valid, but user was deleted from the DB
-    return next(
-      new HandleError("User not found. Please login again.", 401)
-    );
-  }
+  req.user = await User.findById(userId);
 
-  next();
+  if (!req.user) {
+    // User ID was valid, but user was deleted from the DB
+    return next(
+      new HandleError("User not found. Please login again.", 401)
+    );
+  }
+
+  next();
 });
 
 /* =====================================================
