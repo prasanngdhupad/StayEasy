@@ -5,8 +5,9 @@ export const sendToken = (user, statusCode, res) => {
     .status(statusCode)
     .cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+      // Change: Force these for cross-domain (Vercel -> Render)
+      secure: true, 
+      sameSite: "None", 
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
     })
     .json({
