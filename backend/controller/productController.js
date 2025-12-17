@@ -84,7 +84,7 @@ export const createProducts = handleAsyncError(async (req, res) => {
    GET ALL PROPERTIES (SEARCH + FILTER + PAGINATION)
 ===================================================== */
 export const getProducts = handleAsyncError(async (req, res, next) => {
-  const resultsPerPage = 6;
+  const resultsPerPage = 4;
 
   const apiFeature = new APIFunctionality(Product.find(), req.query)
     .search()
