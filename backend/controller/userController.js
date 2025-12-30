@@ -54,17 +54,17 @@ export const logout = (req, res) => {
   res.cookie("token", "", {
     httpOnly: true,
     secure: true,
-    sameSite: "none", // ✅ lowercase (MUST MATCH sendToken)
-    path: "/",        // ✅ important
+    sameSite: "none",
+    path: "/",
     expires: new Date(0),
   });
 
-  res.json({
+  res.status(200).json({
     success: true,
     message: "Logged out successfully",
   });
 };
-;
+
 
 
 /* PASSWORD RESET REQUEST */
